@@ -106,7 +106,7 @@ verlet_orbit(gm, r0, v0, dt)
 mechrs projectile --angle 45 --speed 20
 # Range: 40.775 m | Max height: 10.194 m | Time of flight: 2.886 s
 
-mechrs pendulum --length 1.0 --angle 30 --steps 5000
+mechrs pendulum --length 1.0 --angle 30
 # Period (numerical): 2.007 s | Analytical (small angle): 2.006 s
 
 mechrs oscillator --k 10 --mass 1 --x0 1.0 --plot
