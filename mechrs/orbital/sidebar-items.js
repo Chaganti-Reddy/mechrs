@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["circular_speed","specific_energy","verlet_orbit"],"struct":["Vec2"]};
