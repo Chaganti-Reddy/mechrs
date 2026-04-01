@@ -47,16 +47,17 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Build documentation
         run: cargo doc --no-deps
-      - name: Create redirect and deploy
+      - name: Flatten and Deploy Docs
         run: |
           cd target/doc
-          echo '<meta http-equiv="refresh" content="0; url=mechrs/index.html">' > index.html
+          cp mechrs/index.html index.html
+          sed -i 's#\.\./##g' index.html
           touch .nojekyll
           git init
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Deploy docs"
+          git commit -m "Deploy docs to root"
           git branch -M gh-pages
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push -f origin gh-pages
