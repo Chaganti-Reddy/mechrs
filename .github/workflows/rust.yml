@@ -45,18 +45,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - name: Build documentation
+      - name: Build docs
         run: cargo doc --no-deps
-      - name: Deploy to GitHub Pages
+      - name: Deploy docs
         run: |
-          echo '<meta http-equiv="refresh" content="0; url=mechrs/index.html">' > target/doc/index.html
           cd target/doc
           touch .nojekyll
           git init
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Deploy documentation"
+          git commit -m "Deploy docs"
           git branch -M gh-pages
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push -f origin gh-pages
