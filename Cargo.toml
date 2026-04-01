@@ -1,0 +1,20 @@
+[package]
+name = "mechrs"
+version = "0.1.0"
+edition = "2021"
+description = "Classical mechanics as lazy Rust iterators"
+license = "MIT"
+repository = "https://github.com/Chaganti-Reddy/mechrs"
+keywords = ["physics", "mechanics", "simulation", "iterators"]
+categories = ["science", "simulation"]
+
+[[bin]]
+name = "mechrs"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "=4.4.18", features = ["derive"] }
+
+[dev-dependencies]
+approx = "0.5"
+
