@@ -45,10 +45,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-
-      - run: cargo doc --no-deps
-
-      - run: |
+      - name: Build and deploy docs
+        run: |
+          cargo doc --no-deps
           cd target/doc
           touch .nojekyll
           echo '<meta http-equiv="refresh" content="0; url=mechrs/index.html">' > index.html
