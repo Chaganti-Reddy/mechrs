@@ -45,11 +45,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - name: Build and deploy docs to root
+      - name: Build documentation
+        run: cargo doc --no-deps
+      - name: Create redirect and deploy
         run: |
-          cargo doc --no-deps
           cd target/doc
-          cp -r mechrs/* .
+          echo '<meta http-equiv="refresh" content="0; url=mechrs/index.html">' > index.html
           touch .nojekyll
           git init
           git config user.name "github-actions"
