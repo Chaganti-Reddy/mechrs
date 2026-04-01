@@ -50,7 +50,7 @@ jobs:
           cargo doc --no-deps
           cd target/doc
           touch .nojekyll
-          echo '<meta http-equiv="refresh" content="0; url=mechrs/index.html">' > index.html
+          echo '<meta http-equiv="refresh" content="0; url=./mechrs/index.html">' > index.html
           git init
           git config user.name "github-actions"
           git config user.email "actions@github.com"
