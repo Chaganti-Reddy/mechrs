@@ -45,18 +45,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - name: Build and deploy docs to root
+      - name: Build and deploy docs
         run: |
           cargo doc --no-deps
           cd target/doc
-          cp -r mechrs/* .
-          sed -i 's#\.\./##g' index.html
           touch .nojekyll
+          echo '<meta http-equiv="refresh" content="0; url=./mechrs/index.html">' > index.html
           git init
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Deploy docs to root"
+          git commit -m "docs"
           git branch -M gh-pages
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} 
+          git push -f origin gh-pages
+          git push -f origin gh-pages
+          git push -f origin gh-pages
+          git push -f origin gh-pages
+          git push -f origin gh-pages
           git push -f origin gh-pages
