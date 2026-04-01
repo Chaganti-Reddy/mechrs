@@ -10,12 +10,20 @@ pub struct Oscillator {
 impl Oscillator {
     /// Undamped oscillator (damping = 0).
     pub fn new(k: f64, mass: f64) -> Self {
-        Self { k, mass, damping: 0.0 }
+        Self {
+            k,
+            mass,
+            damping: 0.0,
+        }
     }
 
     /// Damped oscillator with damping coefficient `b`.
     pub fn damped(k: f64, mass: f64, b: f64) -> Self {
-        Self { k, mass, damping: b }
+        Self {
+            k,
+            mass,
+            damping: b,
+        }
     }
 
     /// Lazy iterator of `(time, displacement)` pairs.
@@ -31,9 +39,7 @@ impl Oscillator {
         // but rk4_iter only handles scalar ODEs. We implement the state machine directly.
         std::iter::successors(Some((0.0_f64, x0, v0)), move |&(t, x, v)| {
             // RK4 over 2D state (x, v)
-            let f = |_t: f64, x: f64, v: f64| -> (f64, f64) {
-                (v, -omega_sq * x - gamma * v)
-            };
+            let f = |_t: f64, x: f64, v: f64| -> (f64, f64) { (v, -omega_sq * x - gamma * v) };
             let (dx1, dv1) = f(t, x, v);
             let (dx2, dv2) = f(t + dt / 2.0, x + dt / 2.0 * dx1, v + dt / 2.0 * dv1);
             let (dx3, dv3) = f(t + dt / 2.0, x + dt / 2.0 * dx2, v + dt / 2.0 * dv2);
@@ -76,11 +82,11 @@ impl Oscillator {
         std::iter::successors(Some((0.0_f64, x0, v0)), move |&(t, x, v)| {
             let omega_sq = k / m;
             let (dx1, dv1) = (v, -omega_sq * x);
-            let (dx2, dv2) = (v + dt/2.0*dv1, -omega_sq*(x + dt/2.0*dx1));
-            let (dx3, dv3) = (v + dt/2.0*dv2, -omega_sq*(x + dt/2.0*dx2));
-            let (dx4, dv4) = (v + dt*dv3, -omega_sq*(x + dt*dx3));
-            let x_next = x + (dt/6.0)*(dx1 + 2.0*dx2 + 2.0*dx3 + dx4);
-            let v_next = v + (dt/6.0)*(dv1 + 2.0*dv2 + 2.0*dv3 + dv4);
+            let (dx2, dv2) = (v + dt / 2.0 * dv1, -omega_sq * (x + dt / 2.0 * dx1));
+            let (dx3, dv3) = (v + dt / 2.0 * dv2, -omega_sq * (x + dt / 2.0 * dx2));
+            let (dx4, dv4) = (v + dt * dv3, -omega_sq * (x + dt * dx3));
+            let x_next = x + (dt / 6.0) * (dx1 + 2.0 * dx2 + 2.0 * dx3 + dx4);
+            let v_next = v + (dt / 6.0) * (dv1 + 2.0 * dv2 + 2.0 * dv3 + dv4);
             Some((t + dt, x_next, v_next))
         })
         .map(move |(_, x, v)| 0.5 * k * x * x + 0.5 * m * v * v)
@@ -112,8 +118,16 @@ mod tests {
     #[test]
     fn damping_reduces_amplitude() {
         let osc = Oscillator::damped(10.0, 1.0, 0.5);
-        let early: f64 = osc.states(1.0, 0.0, 0.001).nth(100).map(|(_, x)| x.abs()).unwrap();
-        let late: f64 = osc.states(1.0, 0.0, 0.001).nth(5000).map(|(_, x)| x.abs()).unwrap();
+        let early: f64 = osc
+            .states(1.0, 0.0, 0.001)
+            .nth(100)
+            .map(|(_, x)| x.abs())
+            .unwrap();
+        let late: f64 = osc
+            .states(1.0, 0.0, 0.001)
+            .nth(5000)
+            .map(|(_, x)| x.abs())
+            .unwrap();
         assert!(late < early, "Damping should reduce amplitude over time");
     }
 }

@@ -80,6 +80,9 @@ mod tests {
             let (_, y) = rk4_iter(|_, y| y, 0.0, 1.0, 0.01).nth(100).unwrap();
             (y - 1.0_f64.exp()).abs()
         };
-        assert!(rk4_err < euler_err, "RK4 should be more accurate than Euler");
+        assert!(
+            rk4_err < euler_err,
+            "RK4 should be more accurate than Euler"
+        );
     }
 }

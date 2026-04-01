@@ -46,9 +46,7 @@ impl Projectile {
 
     /// Total time of flight until y returns to 0 (seconds).
     pub fn time_of_flight(&self, dt: f64) -> f64 {
-        self.positions(dt)
-            .take_while(|&(_, y)| y >= 0.0)
-            .count() as f64 * dt
+        self.positions(dt).take_while(|&(_, y)| y >= 0.0).count() as f64 * dt
     }
 
     /// Lazy running-maximum-height stream via `.scan()`.
@@ -77,7 +75,11 @@ mod tests {
     fn max_height_90_degrees() {
         // Analytical: v²/(2g) = 400/19.62 ≈ 20.387 m
         let p = Projectile::new(std::f64::consts::FRAC_PI_2, 20.0);
-        approx::assert_abs_diff_eq!(p.max_height(0.0001), 20.0_f64.powi(2) / (2.0 * G), epsilon = 0.01);
+        approx::assert_abs_diff_eq!(
+            p.max_height(0.0001),
+            20.0_f64.powi(2) / (2.0 * G),
+            epsilon = 0.01
+        );
     }
 
     #[test]

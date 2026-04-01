@@ -6,7 +6,10 @@ fn main() {
     let analytical = p.analytical_period();
 
     println!("Pendulum period comparison (L = 1.0 m)\n");
-    println!("{:>8}  {:>12}  {:>12}  {:>10}", "Angle", "Analytical", "Numerical", "Error %");
+    println!(
+        "{:>8}  {:>12}  {:>12}  {:>10}",
+        "Angle", "Analytical", "Numerical", "Error %"
+    );
     println!("{:-<8}  {:-<12}  {:-<12}  {:-<10}", "", "", "", "");
 
     for &deg in &[5.0_f64, 15.0, 30.0, 60.0, 80.0] {

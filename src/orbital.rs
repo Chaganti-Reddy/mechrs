@@ -26,7 +26,10 @@ impl Vec2 {
     /// Unit vector in the same direction.
     pub fn normalized(&self) -> Self {
         let n = self.norm();
-        Self { x: self.x / n, y: self.y / n }
+        Self {
+            x: self.x / n,
+            y: self.y / n,
+        }
     }
 
     /// Dot product.
@@ -38,21 +41,30 @@ impl Vec2 {
 impl Add for Vec2 {
     type Output = Self;
     fn add(self, rhs: Self) -> Self {
-        Self { x: self.x + rhs.x, y: self.y + rhs.y }
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
     }
 }
 
 impl Sub for Vec2 {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self {
-        Self { x: self.x - rhs.x, y: self.y - rhs.y }
+        Self {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
     }
 }
 
 impl Mul<f64> for Vec2 {
     type Output = Self;
     fn mul(self, s: f64) -> Self {
-        Self { x: self.x * s, y: self.y * s }
+        Self {
+            x: self.x * s,
+            y: self.y * s,
+        }
     }
 }
 
@@ -72,12 +84,7 @@ fn gravity(gm: f64, r: Vec2) -> Vec2 {
 /// - `r0`: initial position (m)
 /// - `v0`: initial velocity (m/s)
 /// - `dt`: time step (s)
-pub fn verlet_orbit(
-    gm: f64,
-    r0: Vec2,
-    v0: Vec2,
-    dt: f64,
-) -> impl Iterator<Item = (Vec2, Vec2)> {
+pub fn verlet_orbit(gm: f64, r0: Vec2, v0: Vec2, dt: f64) -> impl Iterator<Item = (Vec2, Vec2)> {
     // State: (position, velocity, acceleration)
     let a0 = gravity(gm, r0);
     std::iter::successors(Some((r0, v0, a0)), move |&(r, v, a)| {
@@ -104,7 +111,7 @@ mod tests {
     use super::*;
 
     const GM_SUN: f64 = 1.327e20; // m³/s²
-    const AU: f64 = 1.496e11;     // m
+    const AU: f64 = 1.496e11; // m
 
     #[test]
     fn circular_orbit_constant_radius() {

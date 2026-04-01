@@ -1,5 +1,5 @@
 //! ASCII orbital trace — Verlet orbit demo.
-use mechrs::orbital::{verlet_orbit, Vec2, circular_speed};
+use mechrs::orbital::{circular_speed, verlet_orbit, Vec2};
 
 fn main() {
     let gm = 1.327e20_f64;
@@ -33,7 +33,9 @@ fn main() {
     // Mark sun at origin
     let sc = ((1.6 / 3.2) * (width as f64 - 1.0)).round() as usize;
     let sr = ((1.6 / 3.2) * (height as f64 - 1.0)).round() as usize;
-    if sr < height && sc < width { grid[sr][sc] = '☀'; }
+    if sr < height && sc < width {
+        grid[sr][sc] = '☀';
+    }
 
     println!("Elliptical orbit (v = 0.8 × circular speed)\n");
     for row in &grid {

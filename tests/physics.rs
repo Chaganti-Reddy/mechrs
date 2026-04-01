@@ -56,7 +56,10 @@ fn pendulum_large_angle_period_increases() {
     let p = Pendulum::new(1.0);
     let small = p.numerical_period(5.0_f64.to_radians(), 0.0001);
     let large = p.numerical_period(80.0_f64.to_radians(), 0.0001);
-    assert!(large > small * 1.1, "80° period should be significantly longer than 5° period");
+    assert!(
+        large > small * 1.1,
+        "80° period should be significantly longer than 5° period"
+    );
 }
 
 // ── Orbital ──────────────────────────────────────────────────────────────────
@@ -75,5 +78,9 @@ fn circular_orbit_conserves_radius() {
         .map(|(pos, _)| (pos.norm() / r - 1.0).abs())
         .fold(0.0_f64, f64::max);
 
-    assert!(max_drift < 1e-3, "Radius drifts by {:.2e} (> 0.1%)", max_drift);
+    assert!(
+        max_drift < 1e-3,
+        "Radius drifts by {:.2e} (> 0.1%)",
+        max_drift
+    );
 }

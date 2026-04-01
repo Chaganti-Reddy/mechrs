@@ -23,7 +23,9 @@ pub struct Expr<'sym> {
 impl SymbolTable {
     /// Create an empty symbol table.
     pub fn new() -> Self {
-        Self { vars: HashMap::new() }
+        Self {
+            vars: HashMap::new(),
+        }
     }
 
     /// Insert or update a named value.
