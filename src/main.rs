@@ -1,10 +1,14 @@
 //! mechrs CLI — run physics simulations from the command line.
 
 use clap::{Parser, Subcommand};
-use mechrs::{kinematics::Projectile, oscillator::Oscillator, orbital, pendulum::Pendulum};
+use mechrs::{kinematics::Projectile, orbital, oscillator::Oscillator, pendulum::Pendulum};
 
 #[derive(Parser)]
-#[command(name = "mechrs", about = "Classical mechanics as lazy Rust iterators", version)]
+#[command(
+    name = "mechrs",
+    about = "Classical mechanics as lazy Rust iterators",
+    version
+)]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -83,7 +87,12 @@ fn main() {
             println!("  Small-angle error:               {error_pct:.4}%");
         }
 
-        Command::Oscillator { k, mass, x0, damping } => {
+        Command::Oscillator {
+            k,
+            mass,
+            x0,
+            damping,
+        } => {
             let osc = if damping > 0.0 {
                 Oscillator::damped(k, mass, damping)
             } else {
@@ -105,13 +114,18 @@ fn main() {
             let max_w = 40;
             for (t, x) in osc.states(x0, 0.0, 0.01).take(steps) {
                 let bars = ((x / x0) * max_w as f64).round() as i32;
-                let center = max_w as i32;
-                let line: String = (0..(2 * max_w + 1) as i32)
+                let center = max_w;
+                let line: String = (0..(2 * max_w + 1))
                     .map(|i| {
-                        if i == center { '|' }
-                        else if bars >= 0 && i > center && i <= center + bars { '█' }
-                        else if bars < 0 && i >= center + bars && i < center { '█' }
-                        else { ' ' }
+                        if i == center {
+                            '|'
+                        } else if (bars >= 0 && i > center && i <= center + bars)
+                            || (bars < 0 && i >= center + bars && i < center)
+                        {
+                            '█'
+                        } else {
+                            ' '
+                        }
                     })
                     .collect();
                 println!("  {t:5.2}s {line}");
@@ -130,7 +144,10 @@ fn main() {
             let (r_min, r_max, _) = orbital::verlet_orbit(gm_si, r0, v0, dt)
                 .take(365)
                 .map(|(pos, _)| pos.norm())
-                .fold((f64::INFINITY, f64::NEG_INFINITY, 0usize), |(mn, mx, n), r| (mn.min(r), mx.max(r), n + 1));
+                .fold(
+                    (f64::INFINITY, f64::NEG_INFINITY, 0usize),
+                    |(mn, mx, n), r| (mn.min(r), mx.max(r), n + 1),
+                );
 
             println!("Orbit: r={radius} AU, GM={gm}×10²⁰ m³/s²");
             println!("  Circular speed:  {:.3} km/s", v / 1000.0);
